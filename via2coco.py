@@ -168,7 +168,7 @@ class MyEncoder(json.JSONEncoder):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='path to image and json')
     parser.add_argument('--image-path', 
-                        default='/home/xia/bobbins/bobbins300/rgb/', 
+                        default='/home/xia/bobbins/data/rgb/', 
                         help='path to rgb image', 
                         type=str)
     parser.add_argument('--json-path', 
