@@ -41,8 +41,7 @@ if __name__ == '__main__':
     # load image
     #imgId = np.random.randint(0,200)
     #imgId = 400 + imgId 
-    #imgId = np.random.randint(0,20)
-    imgId = 11
+    imgId = np.random.randint(0,20)
     img_name = 'rgb_' + '{:0>4d}'.format(imgId) + '.png'
     img_file = img_path + img_name
     image = load(img_file)
