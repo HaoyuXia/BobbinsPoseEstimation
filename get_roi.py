@@ -29,6 +29,10 @@ if __name__ == '__main__':
                         default='/home/xia/maskrcnn-benchmark/output/r_max_iter_5200/inference/spindle100_val/', 
                         help='path to inference', 
                         type=str)
+    parser.add_argument('--save-path', 
+                        default='/home/xia/bobbins/pc_roi.ply', 
+                        help='path to save the point cloud', 
+                        type=str)
     args = parser.parse_args()
     
     pylab.rcParams['figure.figsize'] = (12.0, 9.0)
@@ -53,21 +57,23 @@ if __name__ == '__main__':
     # get best segmentation
     segm_path = args.inf_path + 'segm.json'
     segm_img, segm = visualization_helpers.getSegm(segm_path, color, img['id'], 0.85)
-    best_mask = visualization_helpers.getBestMask(color, segm)
+    best_mask = visualization_helpers.getBestMask(segm, segm_img)
     
     # show best segmentation
     plt.axis('off')
     plt.title('Best Segmentation', fontsize = 'xx-large')
     mask = []
     mask.append(best_mask)
+    mask = visualization_helpers.removeInvalidMask(mask)
     dst = visualization_helpers.showSegm(color, mask)
     plt.imshow(dst)
     plt.show()
     
     # get point cloud
-    color_roi = cv2.bitwise_and(color, color, mask = best_mask)
-    depth_roi = cv2.bitwise_and(depth, depth, mask = best_mask)
+    color_roi = cv2.bitwise_and(color, color, mask = mask[0])
+    depth_roi = cv2.bitwise_and(depth, depth, mask = mask[0])
     pc_roi = img2pc.createPointCloud(color_roi, depth_roi, True)
+    #img2pc.writePLY(pc_roi, args.save_path)
         
     end = time.time()
     print('Running this code uses ', end - start, 's')

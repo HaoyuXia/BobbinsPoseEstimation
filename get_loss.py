@@ -6,16 +6,12 @@ if ros_packages in sys.path:
 import numpy as np
 import re
 import matplotlib.pyplot as plt
-import argparse
+import matplotlib.pylab as pylab
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='path to image and json')
-    parser.add_argument('--log-file', 
-                        default='/home/xia/maskrcnn-benchmark/output/r_300_7200_0010_480_new/log.txt', 
-                        help='path to log file', 
-                        type=str)
-    args = parser.parse_args()
-    with open(args.log_file, 'r') as f:
+    log_file = '/home/xia/maskrcnn-benchmark/output/r_300_7200_0010_480_new/log.txt'
+    pylab.rcParams['figure.figsize'] = (12.0, 9.0)
+    with open(log_file, 'r') as f:
         log = f.readlines()
     loss = []
     lr = []

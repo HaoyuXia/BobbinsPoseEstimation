@@ -46,14 +46,14 @@ def showSegm(img, mask):
         dst = cv2.add(dst, mm)
     return dst
 
-def getBestMask(img, segm):
-    best_score = segm[0]['score']
+def getBestMask(segm, mask):
+    best_score = 0
     best_index = 0
     for i, data in enumerate(segm):
-        if segm[i]['score'] > best_score:
-            best_score = segm[i]['score']
+        if data['score'] > best_score:
+            best_score = data['score']
             best_index = i
-    best_mask = decode(segm[best_index]['segmentation'])
+    best_mask = mask[best_index]
     return best_mask
 
 def removeInvalidMask(mask):

@@ -9,7 +9,6 @@ import numpy as np
 from maskrcnn_benchmark.config import cfg
 from predictor_bobbin import BobbinsDemo
 import time
-import argparse
 
 def load(path):
     pil_image = Image.open(path).convert("RGB")
@@ -26,21 +25,12 @@ def imshow(img, img_name):
 if __name__ == '__main__':
     start = time.time()
     
-    parser = argparse.ArgumentParser(description='path to configs and images')
-    parser.add_argument('--config-path', 
-                        default='/home/xia/maskrcnn-benchmark/configs/e2e_mask_rcnn_R_101_FPN_1x_predictor.yaml', 
-                        help='path to annotations', 
-                        type=str)
-    parser.add_argument('--image-path', 
-                        default='/home/xia/bobbins/data/test/rgb/', 
-                        help='path to images', 
-                        type=str)
-    args = parser.parse_args()
-    
+    config_path = '/home/xia/maskrcnn-benchmark/configs/e2e_mask_rcnn_R_101_FPN_1x_predictor.yaml'
+    img_path = '/home/xia/bobbins/data/test/rgb/'    
     pylab.rcParams['figure.figsize'] = (12.0, 9.0)
     
     # update the config options with the config file
-    cfg.merge_from_file(args.config_path)
+    cfg.merge_from_file(config_path)
     # manual override some options
     cfg.merge_from_list(["MODEL.DEVICE", "cpu"])
     bobbin_demo = BobbinsDemo(cfg,
@@ -54,7 +44,7 @@ if __name__ == '__main__':
     #imgId = np.random.randint(0,20)
     imgId = 11
     img_name = 'rgb_' + '{:0>4d}'.format(imgId) + '.png'
-    img_file = args.image_path + img_name
+    img_file = img_path + img_name
     image = load(img_file)
     
     # compute predictions

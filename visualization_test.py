@@ -9,27 +9,14 @@ import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 import cv2
 import visualization_helpers
-import argparse
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='path to annotations, images and inference')
-    parser.add_argument('--ann-path', 
-                        default='/home/xia/maskrcnn-benchmark/datasets/bobbins300/bobbins300v3_val.json', 
-                        help='path to annotations', 
-                        type=str)
-    parser.add_argument('--image-path', 
-                        default='/home/xia/bobbins/data/rgb', 
-                        help='path to images', 
-                        type=str)
-    parser.add_argument('--inf-path', 
-                        default='/home/xia/maskrcnn-benchmark/output/r_300_7200_0010_480_norm_rgb/bobbins300v3_val/', 
-                        help='path to inference', 
-                        type=str)
-    args = parser.parse_args()
-    
+    ann_path = '/home/xia/maskrcnn-benchmark/datasets/bobbins300/bobbins300v3_val.json'
+    img_path = '/home/xia/bobbins/data/rgb'
+    inf_path = '/home/xia/maskrcnn-benchmark/output/r_300_7200_0010_480_norm_rgb/bobbins300v3_val/'    
     pylab.rcParams['figure.figsize'] = (12.0, 9.0)
-    #annFile = '/home/xia/maskrcnn-benchmark/datasets/bobbins300/bobbins300v3_val.json'
-    coco=COCO(args.ann_path)
+    
+    coco=COCO(ann_path)
     
     cats = coco.loadCats(coco.getCatIds())
     nms = [cat['name'] for cat in cats]
@@ -45,7 +32,7 @@ if __name__ == '__main__':
     # dataType = 'val2017'
     # I = io.imread('%s/%s/%s'%(dataDir,dataType,img['file_name']))
     # I = io.imread('%s/%s'%(dataDir,img['file_name']))
-    I = cv2.imread('%s/%s'%(args.image_path,img['file_name']))
+    I = cv2.imread('%s/%s'%(img_path,img['file_name']))
     I = cv2.cvtColor(I, cv2.COLOR_BGR2RGB)
     
     plt.axis('off')
@@ -68,7 +55,7 @@ if __name__ == '__main__':
     print('Ground Truth: {} instances'.format(len(anns)))
     
     # show bbox
-    bbox_path = args.inf_path + 'bbox.json'
+    bbox_path = inf_path + 'bbox.json'
     bbox_img, bbox = visualization_helpers.showBBox(bbox_path, I, img['id'], 0.85)
     plt.axis('off')
     plt.title('Object Detection', fontsize = 'xx-large')
@@ -77,7 +64,7 @@ if __name__ == '__main__':
     print('Detection: {} bounding boxes'.format(len(bbox)))
     
     # show segmentation
-    segm_path = args.inf_path + 'segm.json'
+    segm_path = inf_path + 'segm.json'
     mask, segm = visualization_helpers.getSegm(segm_path, I, img['id'], 0.85)
     clean_mask = visualization_helpers.removeInvalidMask(mask)
     dst = visualization_helpers.showSegm(I, clean_mask)
